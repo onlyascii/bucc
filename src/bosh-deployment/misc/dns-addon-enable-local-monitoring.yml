@@ -1,3 +1,0 @@
-- type: replace
-  path: /addons/name=bosh-dns/jobs/name=bosh-dns/properties?/metrics?/enabled
-  value: true
