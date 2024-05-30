@@ -301,7 +301,7 @@ clean() {
   rm -rf ${state} "${project_root}/operators" "${project_root}/src/offline_resources"
   mv ${vars_file} ${vars_file}.bck
   echo "'state' dir has been cleaned and 'vars.yml' has been moved to 'vars.yml.bck'"
-  echo "to also cleanup your current shell run `source <(bucc env --clean)`"
+  echo "to also cleanup your current shell run 'source <(bucc env --clean)'"
 }
 
 clean_bosh_downloads() {
