@@ -420,7 +420,7 @@ _fly() {
     if [[ ! -f ${fly} || ("$(${fly} --version)" != "${fly_version}") ]]; then
         echo "installing fly ${fly_version} into: ${repo_root}/bin/"
         pushd $(mktemp -d)
-        curl -s -k -L >fly "${url}/api/v1/cli?arch=amd64&platform=$(platform)"
+        curl -s -k -L >fly "${url}/api/v1/cli?arch=$(architecture)&platform=$(platform)"
         chmod +x fly
         mv fly ${repo_root}/bin/
         popd
@@ -463,7 +463,7 @@ _credhub_download() {
     if ! ( [ -f ${cli_path} ] && CREDHUB_SERVER='' ${cli_path} --version | head -n 1 | grep ${version} > /dev/null); then
       echo "installing credhub cli '${version}' into: ${repo_root}/bin/"
       pushd $(mktemp -d)
-      curl -s -L >credhub.tgz "${url}/${version}/credhub-$(platform)-${version}.tgz"
+      curl -s -L >credhub.tgz "${url}/${version}/credhub-$(platform)-$(architecture)-${version}.tgz"
       tar -xzf credhub.tgz
       chmod +x credhub
       mv credhub ${repo_root}/bin/
@@ -488,7 +488,7 @@ _safe_download() {
     if ! ( [ -f ${cli_path} ] && ${cli_path} --version 2>&1 | head -n 1 | grep ${version} > /dev/null); then
       echo "installing safe cli '${version}' into: ${repo_root}/bin/"
       pushd $(mktemp -d)
-      curl -s -L >safe "${url}/v${version}/safe-$(platform)-amd64"
+      curl -s -L >safe "${url}/v${version}/safe-$(platform)-$(architecture)"
       chmod +x safe
       mv safe ${repo_root}/bin/
       popd
@@ -511,13 +511,9 @@ _bbr_download() {
     if ! ( [ -f ${cli_path} ] && ${cli_path} --version | head -n 1 | grep ${version} > /dev/null); then
       echo "installing bbr cli '${version}' into: ${repo_root}/bin/"
       pushd $(mktemp -d)
-      curl -s -L >bbr.tar "${url}/v${version}/bbr-${version}.tar"
-      tar -xf bbr.tar
-      if [ "$(platform)" == "darwin" ]; then
-          mv releases/bbr-mac ${repo_root}/bin/bbr
-      else
-          mv releases/bbr ${repo_root}/bin/
-      fi
+      curl -s -L >bbr "${url}/v${version}/bbr-${version}-$(platform)-$(architecture)"
+      chmod +x bbr 
+      mv bbr ${repo_root}/bin/
       popd
     fi
 }
