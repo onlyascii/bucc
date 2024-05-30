@@ -13,7 +13,7 @@ The bucc command line utility allows for easy bootstrapping of the BUCC stack (B
 3. Clone this repository
 
 ```
-git clone https://github.com/starkandwayne/bucc.git
+git clone --recurse-submodules https://github.com/starkandwayne/bucc.git 
 cd bucc
 source .envrc # if not using direnv
 ```

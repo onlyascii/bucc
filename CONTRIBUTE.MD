@@ -5,16 +5,6 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-## Updates on `src/bosh-deployments`
-
-!!!DO NOT MAKE COMMIT CHANGES TO `src/bosh-deployments`!!!
-
-we work with `git subtree` to get the latest Version
-`git subtree pull --prefix src/bosh-deployment https://github.com/cloudfoundry/bosh-deployment.git master master --squash`
-
-please note that this is only necessary for local testing
-because our CI will try to fetch and the test the latest ops files
-
 ## Pull Request Process
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a
