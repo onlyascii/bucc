@@ -1,7 +1,6 @@
-credhub=2.9.3
+credhub=2.9.30
 bucc=0.11.5
-bbr=1.9.26
-bosh=6.4.17
-uaa=0.10.0
-safe=1.6.1
-
+bbr=1.9.65
+bosh=7.5.7
+uaa=0.13.0
+safe=1.8.0

@@ -230,6 +230,14 @@ platform() {
     fi
 }
 
+architecture() {
+    if [ "$(uname -m)" == "x86_64" ]; then
+        echo "amd64"
+    else
+        echo "$(uname -m)"
+    fi
+}
+
 faketty() {
     case $(platform) in
         darwin)
@@ -448,7 +456,7 @@ _bosh() {
 }
 
 _credhub_download() {
-    local url="https://github.com/cloudfoundry-incubator/credhub-cli/releases/download"
+    local url="https://github.com/cloudfoundry/credhub-cli/releases/download"
     local version=$(grep credhub ${repo_root}/.versions | cut -d= -f2)
     local cli_path=${repo_root}/bin/credhub
 
@@ -473,7 +481,7 @@ _credhub() {
 }
 
 _safe_download() {
-    local url="https://github.com/starkandwayne/safe/releases/download"
+    local url="https://github.com/Qarik-Group/safe/releases/download"
     local version=$(grep safe ${repo_root}/.versions | cut -d= -f2)
     local cli_path=${repo_root}/bin/safe
 
@@ -496,7 +504,7 @@ _safe() {
 
 
 _bbr_download() {
-    local url="https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download"
+    local url="https://github.com/cloudfoundry/bosh-backup-and-restore/releases/download"
     local version=$(grep bbr ${repo_root}/.versions | cut -d= -f2)
     local cli_path=${repo_root}/bin/bbr
 
@@ -522,34 +530,23 @@ _bbr() {
 }
 
 _ensure_bosh_cli_installed() {
-    local url="https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli"
+    local url="https://github.com/cloudfoundry/bosh-cli/releases/download"
     local version=$(grep bosh ${repo_root}/.versions | cut -d= -f2)
     local cli_path=${repo_root}/bin/bosh
 
     if ! ( [ -f ${cli_path} ] && ${cli_path} --version | head -n 1 | grep ${version} > /dev/null); then
-
-      (>&2 echo "installing bosh cli '${version}' into: ${repo_root}/bin/")
       pushd $(mktemp -d)
-      if [ "$(platform)" == "darwin" ]; then
-          curl -s -L >bosh "${url}-${version}-darwin-amd64"
-          if [[ $? != 0 ]]; then
-            echo "Unable to download the bosh CLI. Please check your internet connection and try again."
-            exit 1
-          fi
-          chmod +x bosh
-          mv bosh ${repo_root}/bin/
-      else
-          curl -s -L >bosh "${url}-${version}-linux-amd64"
-          if [[ $? != 0 ]]; then
-            echo "Unable to download the bosh CLI. Please check your internet connection and try again."
-            exit 1
-          fi
-          chmod +x bosh
-          mv bosh ${repo_root}/bin/
+      curl -s -L >bosh "${url}/v${version}/bosh-cli-${version}-$(platform)-$(architecture)"
+      if [[ $? != 0 ]]; then
+        echo "Unable to download the bosh CLI. Please check your internet connection and try again."
+        exit 1
       fi
+      chmod +x bosh
+      mv bosh ${repo_root}/bin/
       popd
     fi
 }
+
 
 _uaac() {
     faketty uaac target $(int --path /instance_groups/0/jobs/name=uaa/properties/uaa/url) --ca-cert $(ca_cert)
@@ -557,7 +554,7 @@ _uaac() {
 }
 
 _uaa_download() {
-    local url="https://github.com/cloudfoundry-incubator/uaa-cli/releases/download"
+    local url="https://github.com/cloudfoundry/uaa-cli/releases/download"
     local version=$(grep uaa ${repo_root}/.versions | cut -d= -f2)
     local cli_path=${repo_root}/bin/uaa
 
